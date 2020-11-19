@@ -1,0 +1,4 @@
+tfds.as_dataframe(
+    ds: tf.data.Dataset,
+    ds_info: Optional[tfds.core.DatasetInfo] = None
+) -> StyledDataFrame
