@@ -1,0 +1,156 @@
+dependencies {
+  // If you want to use the base sdk
+  implementation 'com.google.mlkit:pose-detection:17.0.0'
+  // If you want to use the accurate sdk
+  implementation 'com.google.mlkit:pose-detection-accurate:17.0.0'
+}
+
+// Base pose detector with streaming frames, when depending on the pose-detection sdk
+PoseDetectorOptions options =
+   new PoseDetectorOptions.Builder()
+       .setDetectorMode(PoseDetectorOptions.STREAM_MODE)
+       .build();
+
+// Accurate pose detector on static images, when depending on the pose-detection-accurate sdk
+AccuratePoseDetectorOptions options =
+   new AccuratePoseDetectorOptions.Builder()
+       .setDetectorMode(AccuratePoseDetectorOptions.SINGLE_IMAGE_MODE)
+       .build();
+       
+       PoseDetector poseDetector = PoseDetection.getClient(options);
+       
+       private class YourAnalyzer implements ImageAnalysis.Analyzer {
+
+    @Override
+    public void analyze(ImageProxy imageProxy) {
+        Image mediaImage = imageProxy.getImage();
+        if (mediaImage != null) {
+          InputImage image =
+                InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
+          // Pass image to an ML Kit Vision API
+          // ...
+        }
+    }
+}
+
+private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+static {
+    ORIENTATIONS.append(Surface.ROTATION_0, 0);
+    ORIENTATIONS.append(Surface.ROTATION_90, 90);
+    ORIENTATIONS.append(Surface.ROTATION_180, 180);
+    ORIENTATIONS.append(Surface.ROTATION_270, 270);
+}
+
+/**
+ * Get the angle by which an image must be rotated given the device's current
+ * orientation.
+ */
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+private int getRotationCompensation(String cameraId, Activity activity, boolean isFrontFacing)
+        throws CameraAccessException {
+    // Get the device's current rotation relative to its "native" orientation.
+    // Then, from the ORIENTATIONS table, look up the angle the image must be
+    // rotated to compensate for the device's rotation.
+    int deviceRotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+    int rotationCompensation = ORIENTATIONS.get(deviceRotation);
+
+    // Get the device's sensor orientation.
+    CameraManager cameraManager = (CameraManager) activity.getSystemService(CAMERA_SERVICE);
+    int sensorOrientation = cameraManager
+            .getCameraCharacteristics(cameraId)
+            .get(CameraCharacteristics.SENSOR_ORIENTATION);
+
+    if (isFrontFacing) {
+        rotationCompensation = (sensorOrientation + rotationCompensation) % 360;
+    } else { // back-facing
+        rotationCompensation = (sensorOrientation - rotationCompensation + 360) % 360;
+    }
+    return rotationCompensation;
+}
+
+InputImage image = InputImage.fromMediaImage(mediaImage, rotation);
+
+InputImage image;
+try {
+    image = InputImage.fromFilePath(context, uri);
+} catch (IOException e) {
+    e.printStackTrace();
+}
+
+InputImage image = InputImage.fromByteBuffer(byteBuffer,
+        /* image width */ 480,
+        /* image height */ 360,
+        rotationDegrees,
+        InputImage.IMAGE_FORMAT_NV21 // or IMAGE_FORMAT_YV12
+);
+// Or:
+InputImage image = InputImage.fromByteArray(
+        byteArray,
+        /* image width */480,
+        /* image height */360,
+        rotation,
+        InputImage.IMAGE_FORMAT_NV21 // or IMAGE_FORMAT_YV12
+);
+
+InputImage image = InputImage.fromBitmap(bitmap, rotationDegree);
+
+Task<Pose> result =
+        poseDetector.process(image)
+                .addOnSuccessListener(
+                        new OnSuccessListener<Pose>() {
+                            @Override
+                            public void onSuccess(Pose pose) {
+                                // Task completed successfully
+                                // ...
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Task failed with an exception
+                                // ...
+                            }
+                        });
+                        
+                        // Get all PoseLandmarks. If no person was detected, the list will be empty
+List<PoseLandmark> allPoseLandmarks = pose.getAllPoseLandmarks();
+
+// Or get specific PoseLandmarks individually. These will all be null if no person
+// was detected
+PoseLandmark leftShoulder = pose.getPoseLandmark(PoseLandmark.LEFT_SHOULDER);
+PoseLandmark rightShoulder = pose.getPoseLandmark(PoseLandmark.RIGHT_SHOULDER);
+PoseLandmark leftElbow = pose.getPoseLandmark(PoseLandmark.LEFT_ELBOW);
+PoseLandmark rightElbow = pose.getPoseLandmark(PoseLandmark.RIGHT_ELBOW);
+PoseLandmark leftWrist = pose.getPoseLandmark(PoseLandmark.LEFT_WRIST);
+PoseLandmark rightWrist = pose.getPoseLandmark(PoseLandmark.RIGHT_WRIST);
+PoseLandmark leftHip = pose.getPoseLandmark(PoseLandmark.LEFT_HIP);
+PoseLandmark rightHip = pose.getPoseLandmark(PoseLandmark.RIGHT_HIP);
+PoseLandmark leftKnee = pose.getPoseLandmark(PoseLandmark.LEFT_KNEE);
+PoseLandmark rightKnee = pose.getPoseLandmark(PoseLandmark.RIGHT_KNEE);
+PoseLandmark leftAnkle = pose.getPoseLandmark(PoseLandmark.LEFT_ANKLE);
+PoseLandmark rightAnkle = pose.getPoseLandmark(PoseLandmark.RIGHT_ANKLE);
+PoseLandmark leftPinky = pose.getPoseLandmark(PoseLandmark.LEFT_PINKY);
+PoseLandmark rightPinky = pose.getPoseLandmark(PoseLandmark.RIGHT_PINKY);
+PoseLandmark leftIndex = pose.getPoseLandmark(PoseLandmark.LEFT_INDEX);
+PoseLandmark rightIndex = pose.getPoseLandmark(PoseLandmark.RIGHT_INDEX);
+PoseLandmark leftThumb = pose.getPoseLandmark(PoseLandmark.LEFT_THUMB);
+PoseLandmark rightThumb = pose.getPoseLandmark(PoseLandmark.RIGHT_THUMB);
+PoseLandmark leftHeel = pose.getPoseLandmark(PoseLandmark.LEFT_HEEL);
+PoseLandmark rightHeel = pose.getPoseLandmark(PoseLandmark.RIGHT_HEEL);
+PoseLandmark leftFootIndex = pose.getPoseLandmark(PoseLandmark.LEFT_FOOT_INDEX);
+PoseLandmark rightFootIndex = pose.getPoseLandmark(PoseLandmark.RIGHT_FOOT_INDEX);
+PoseLandmark nose = pose.getPoseLandmark(PoseLandmark.NOSE);
+PoseLandmark leftEyeInner = pose.getPoseLandmark(PoseLandmark.LEFT_EYE_INNER);
+PoseLandmark leftEye = pose.getPoseLandmark(PoseLandmark.LEFT_EYE);
+PoseLandmark leftEyeOuter = pose.getPoseLandmark(PoseLandmark.LEFT_EYE_OUTER);
+PoseLandmark rightEyeInner = pose.getPoseLandmark(PoseLandmark.RIGHT_EYE_INNER);
+PoseLandmark rightEye = pose.getPoseLandmark(PoseLandmark.RIGHT_EYE);
+PoseLandmark rightEyeOuter = pose.getPoseLandmark(PoseLandmark.RIGHT_EYE_OUTER);
+PoseLandmark leftEar = pose.getPoseLandmark(PoseLandmark.LEFT_EAR);
+PoseLandmark rightEar = pose.getPoseLandmark(PoseLandmark.RIGHT_EAR);
+PoseLandmark leftMouth = pose.getPoseLandmark(PoseLandmark.LEFT_MOUTH);
+PoseLandmark rightMouth = pose.getPoseLandmark(PoseLandmark.RIGHT_MOUTH);
+
+
+       
