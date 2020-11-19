@@ -1,0 +1,104 @@
+// cloud.google.com/tpu/docs/reference/rest/?apix=true#service:-tpu.googleapis.com
+
+
+All URIs below are relative to https://tpu.googleapis.com
+
+This service provides the following discovery documents:
+
+https://tpu.googleapis.com/$discovery/rest?version=v1
+https://tpu.googleapis.com/$discovery/rest?version=v1alpha1
+REST Resource: v1alpha1.projects.locations
+Methods
+get	GET /v1alpha1/{name=projects/*/locations/*}
+Gets information about a location.
+list	GET /v1alpha1/{name=projects/*}/locations
+Lists information about the supported locations for this service.
+REST Resource: v1alpha1.projects.locations.acceleratorTypes
+Methods
+get	GET /v1alpha1/{name=projects/*/locations/*/acceleratorTypes/*}
+Gets AcceleratorType.
+list	GET /v1alpha1/{parent=projects/*/locations/*}/acceleratorTypes
+Lists accelerator types supported by this API.
+REST Resource: v1alpha1.projects.locations.nodes
+Methods
+create	POST /v1alpha1/{parent=projects/*/locations/*}/nodes
+Creates a node.
+delete	DELETE /v1alpha1/{name=projects/*/locations/*/nodes/*}
+Deletes a node.
+get	GET /v1alpha1/{name=projects/*/locations/*/nodes/*}
+Gets the details of a node.
+list	GET /v1alpha1/{parent=projects/*/locations/*}/nodes
+Lists nodes.
+reimage	POST /v1alpha1/{name=projects/*/locations/*/nodes/*}:reimage
+Reimages a node's OS.
+start	POST /v1alpha1/{name=projects/*/locations/*/nodes/*}:start
+Starts a node.
+stop	POST /v1alpha1/{name=projects/*/locations/*/nodes/*}:stop
+Stops a node.
+REST Resource: v1alpha1.projects.locations.operations
+Methods
+cancel	POST /v1alpha1/{name=projects/*/locations/*/operations/*}:cancel
+Starts asynchronous cancellation on a long-running operation.
+delete	DELETE /v1alpha1/{name=projects/*/locations/*/operations/*}
+Deletes a long-running operation.
+get	GET /v1alpha1/{name=projects/*/locations/*/operations/*}
+Gets the latest state of a long-running operation.
+list	GET /v1alpha1/{name=projects/*/locations/*}/operations
+Lists operations that match the specified filter in the request.
+REST Resource: v1alpha1.projects.locations.tensorflowVersions
+Methods
+get	GET /v1alpha1/{name=projects/*/locations/*/tensorflowVersions/*}
+Gets TensorFlow Version.
+list	GET /v1alpha1/{parent=projects/*/locations/*}/tensorflowVersions
+Lists TensorFlow versions supported by this API.
+Service: tpu.googleapis.com
+All URIs below are relative to https://tpu.googleapis.com
+
+This service provides the following discovery documents:
+
+https://tpu.googleapis.com/$discovery/rest?version=v1
+https://tpu.googleapis.com/$discovery/rest?version=v1alpha1
+REST Resource: v1.projects.locations
+Methods
+get	GET /v1/{name=projects/*/locations/*}
+Gets information about a location.
+list	GET /v1/{name=projects/*}/locations
+Lists information about the supported locations for this service.
+REST Resource: v1.projects.locations.acceleratorTypes
+Methods
+get	GET /v1/{name=projects/*/locations/*/acceleratorTypes/*}
+Gets AcceleratorType.
+list	GET /v1/{parent=projects/*/locations/*}/acceleratorTypes
+Lists accelerator types supported by this API.
+REST Resource: v1.projects.locations.nodes
+Methods
+create	POST /v1/{parent=projects/*/locations/*}/nodes
+Creates a node.
+delete	DELETE /v1/{name=projects/*/locations/*/nodes/*}
+Deletes a node.
+get	GET /v1/{name=projects/*/locations/*/nodes/*}
+Gets the details of a node.
+list	GET /v1/{parent=projects/*/locations/*}/nodes
+Lists nodes.
+reimage	POST /v1/{name=projects/*/locations/*/nodes/*}:reimage
+Reimages a node's OS.
+start	POST /v1/{name=projects/*/locations/*/nodes/*}:start
+Starts a node.
+stop	POST /v1/{name=projects/*/locations/*/nodes/*}:stop
+Stops a node.
+REST Resource: v1.projects.locations.operations
+Methods
+cancel	POST /v1/{name=projects/*/locations/*/operations/*}:cancel
+Starts asynchronous cancellation on a long-running operation.
+delete	DELETE /v1/{name=projects/*/locations/*/operations/*}
+Deletes a long-running operation.
+get	GET /v1/{name=projects/*/locations/*/operations/*}
+Gets the latest state of a long-running operation.
+list	GET /v1/{name=projects/*/locations/*}/operations
+Lists operations that match the specified filter in the request.
+REST Resource: v1.projects.locations.tensorflowVersions
+Methods
+get	GET /v1/{name=projects/*/locations/*/tensorflowVersions/*}
+Gets TensorFlow Version.
+list	GET /v1/{parent=projects/*/locations/*}/tensorflowVersions
+List TensorFlow versions supported by this API.
