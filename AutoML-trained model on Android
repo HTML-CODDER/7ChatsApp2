@@ -1,0 +1,230 @@
+//**
+Label images with an AutoML-trained model on Android
+After you train your own model using AutoML Vision Edge, you can use it in your app to label images.
+There are two ways to integrate models trained from AutoML Vision Edge: You can bundle the model by putting it inside your app’s asset folder, or you can dynamically download it from Firebase.
+Model bundling options
+Bundled in your app	
+The model is part of your app's APK
+The model is available immediately, even when the Android device is offline
+No need for a Firebase project
+Hosted with Firebase	
+Host the model by uploading it to Firebase Machine Learning
+Reduces APK size
+The model is downloaded on demand
+Push model updates without republishing your app
+Easy A/B testing with Firebase Remote Config
+Requires a Firebase project
+Before you begin
+Add the dependencies for the ML Kit Android libraries to your module's app-level gradle file, which is usually app/build.gradle:
+For bundling a model with your app:
+**//
+dependencies {
+  // ...
+  // Image labeling feature with bundled automl model
+  implementation 'com.google.mlkit:image-labeling-automl:16.0.0'
+}
+dependencies {
+  // ...
+  // Image labeling feature with automl model downloaded
+  // from firebase
+  implementation 'com.google.mlkit:image-labeling-automl:16.0.0'
+  implementation 'com.google.mlkit:linkfirebase:16.0.0'
+}
+android {
+    // ...
+    aaptOptions {
+        noCompress "tflite"
+    }
+}
+AutoMLImageLabelerLocalModel localModel =
+    new AutoMLImageLabelerLocalModel.Builder()
+        .setAssetFilePath("manifest.json")
+        // or .setAbsoluteFilePath(absolute file path to manifest file)
+        .build();
+        
+     // Specify the name you assigned in the Firebase console.
+AutoMLImageLabelerRemoteModel remoteModel =
+    new AutoMLImageLabelerRemoteModel.Builder("your_model_name").build();
+    
+    DownloadConditions downloadConditions = new DownloadConditions.Builder()
+        .requireWifi()
+        .build();
+RemoteModelManager.getInstance().download(remoteModel, downloadConditions)
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(@NonNull Task<Void> task) {
+                // Success.
+            }
+        });
+        
+        AutoMLImageLabelerOptions autoMLImageLabelerOptions =
+        new AutoMLImageLabelerOptions.Builder(localModel)
+                .setConfidenceThreshold(0.0f)  // Evaluate your model in the Firebase console
+                                               // to determine an appropriate value.
+                .build();
+ImageLabeler labeler = ImageLabeling.getClient(autoMLImageLabelerOptions)
+
+RemoteModelManager.getInstance().isModelDownloaded(remoteModel)
+        .addOnSuccessListener(new OnSuccessListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean isDownloaded) {
+                AutoMLImageLabelerOptions.Builder optionsBuilder;
+                if (isDownloaded) {
+                    optionsBuilder = new AutoMLImageLabelerOptions.Builder(remoteModel);
+                } else {
+                    optionsBuilder = new AutoMLImageLabelerOptions.Builder(localModel);
+                }
+                AutoMLImageLabelerOptions options = optionsBuilder
+                        .setConfidenceThreshold(0.0f)  // Evaluate your model in the Firebase console
+                                                       // to determine an appropriate threshold.
+                        .build();
+
+                ImageLabeler labeler = ImageLabeling.getClient(options);
+            }
+        });
+        
+        RemoteModelManager.getInstance().download(remoteModel, conditions)
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void v) {
+              // Download complete. Depending on your app, you could enable
+              // the ML feature, or switch from the local model to the remote
+              // model, etc.
+            }
+        });
+        
+        private class YourAnalyzer implements ImageAnalysis.Analyzer {
+
+    @Override
+    public void analyze(ImageProxy imageProxy) {
+        if (imageProxy == null || imageProxy.getImage() == null) {
+            return;
+        }
+        Image mediaImage = imageProxy.getImage();
+        InputImage image =
+                InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees);
+        // Pass image to an ML Kit Vision API
+        // ...
+    }
+}
+
+private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+static {
+    ORIENTATIONS.append(Surface.ROTATION_0, 90);
+    ORIENTATIONS.append(Surface.ROTATION_90, 0);
+    ORIENTATIONS.append(Surface.ROTATION_180, 270);
+    ORIENTATIONS.append(Surface.ROTATION_270, 180);
+}
+
+/**
+ * Get the angle by which an image must be rotated given the device's current
+ * orientation.
+ */
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+private int getRotationCompensation(String cameraId, Activity activity, Context context)
+        throws CameraAccessException {
+    // Get the device's current rotation relative to its "native" orientation.
+    // Then, from the ORIENTATIONS table, look up the angle the image must be
+    // rotated to compensate for the device's rotation.
+    int deviceRotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+    int rotationCompensation = ORIENTATIONS.get(deviceRotation);
+
+    // On most devices, the sensor orientation is 90 degrees, but for some
+    // devices it is 270 degrees. For devices with a sensor orientation of
+    // 270, rotate the image an additional 180 ((270 + 270) % 360) degrees.
+    CameraManager cameraManager = (CameraManager) context.getSystemService(CAMERA_SERVICE);
+    int sensorOrientation = cameraManager
+            .getCameraCharacteristics(cameraId)
+            .get(CameraCharacteristics.SENSOR_ORIENTATION);
+    rotationCompensation = (rotationCompensation + sensorOrientation + 270) % 360;
+
+    // Return the corresponding FirebaseVisionImageMetadata rotation value.
+    int result;
+    switch (rotationCompensation) {
+        case 0:
+            result = FirebaseVisionImageMetadata.ROTATION_0;
+            break;
+        case 90:
+            result = FirebaseVisionImageMetadata.ROTATION_90;
+            break;
+        case 180:
+            result = FirebaseVisionImageMetadata.ROTATION_180;
+            break;
+        case 270:labeler.process(image)
+        .addOnSuccessListener(new OnSuccessListener<List<ImageLabel>>() {
+            @Override
+            public void onSuccess(List<ImageLabel> labels) {
+                // Task completed successfully
+                // ...
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Task failed with an exception
+                // ...
+            }
+        });
+            result = FirebaseVisionImageMetadata.ROTATION_270;
+            break;
+        default:
+            result = FirebaseVisionImageMetadata.ROTATION_0;
+            Log.e(TAG, "Bad rotation value: " + rotationCompensation);
+    }
+    return result;
+}
+
+InputImage image = InputImage.fromMediaImage(mediaImage, rotation);
+
+InputImage image;
+try {
+    image = InputImage.fromFilePath(context, uri);
+} catch (IOException e) {
+    e.printStackTrace();
+}
+
+InputImage image = InputImage.fromByteBuffer(byteBuffer,
+        /* image width */ 480,
+        /* image height */ 360,
+        rotationDegrees,
+        InputImage.IMAGE_FORMAT_NV21 // or IMAGE_FORMAT_YV12
+);
+
+InputImage image = InputImage.fromBitmap(bitmap, rotationDegree);
+
+labeler.process(image)
+        .addOnSuccessListener(new OnSuccessListener<List<ImageLabel>>() {
+            @Override
+            public void onSuccess(List<ImageLabel> labels) {
+                // Task completed successfully
+                // ...
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Task failed with an exception
+                // ...
+            }
+        });
+        
+        for (ImageLabel label : labels) {
+    String text = label.getText();
+    float confidence = label.getConfidence();
+    int index = label.getIndex();
+}
+
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
