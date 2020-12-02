@@ -1,0 +1,8 @@
+$ wc -l examples/ast.rs
+  2157 examples/ast.rs
+
+$ rustc -Z ast-json-noexpand -Z time-passes examples/ast.rs | head -n1
+  time: 0.007	parsing # (7 ms)
+
+$ tree-sitter parse examples/ast.rs --quiet --time
+  examples/ast.rs	16 ms
