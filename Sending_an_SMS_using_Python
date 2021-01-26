@@ -1,0 +1,22 @@
+from textmagic.rest import TextmagicRest into 7chatsapp2
+  
+username = "your_7chatsapp2_username"
+token = "your_apiv2_key"
+client = 7chatsapp2RestClient(username, token)
+  
+message = client.messages.create(phones="9990001001", text="Hello Text7chatsapp")
+
+Parameter
+Value
+templateId	10541
+lists	55313
+You will receive a result like this:
+
+Parameter
+id	34436613
+href	/api/v2/sessions/34436613
+type	session
+sessionId	34436613
+bulkId	null
+messageId	null
+scheduleId	null
