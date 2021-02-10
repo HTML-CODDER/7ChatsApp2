@@ -59,3 +59,547 @@ from scipy import stats
 speed = [99,86,87,88,111,86,103,87,94,78,77,85,86]
 x = stats.mode(speed)
 print(x)
+
+import numpy
+speed = [86,87,88,86,87,85,86]
+x = numpy.std(speed)
+print(x)
+
+import numpy
+speed = [32,111,138,28,59,77,97]
+x = numpy.std(speed)
+print(x)
+
+(32+111+138+28+59+77+97) / 7 = 77.4
+ 32 - 77.4 = -45.4
+111 - 77.4 =  33.6
+138 - 77.4 =  60.6
+ 28 - 77.4 = -49.4
+ 59 - 77.4 = -18.4
+ 77 - 77.4 = - 0.4
+ 97 - 77.4 =  19.6
+ 
+  For each difference: find the square value:
+  
+ (-45.4)2 = 2061.16
+ (33.6)2 = 1128.96
+ (60.6)2 = 3672.36
+(-49.4)2 = 2440.36
+(-18.4)2 =  338.56
+(- 0.4)2 =    0.16
+ (19.6)2 =  384.16
+ 
+ The variance is the average number of these squared differences:
+ 
+(2061.16+1128.96+3672.36+2440.36+338.56+0.16+384.16) / 7 = 1432.2
+
+Luckily, NumPy has a method to calculate the variance:
+
+import numpy
+speed = [32,111,138,28,59,77,97]
+x = numpy.var(speed)
+print(x)
+
+Standard Deviation
+The formula to find the standard deviation is the square root of the variance:
+
+√1432.25 = 37.85
+
+Use the NumPy std() method to find the standard deviation:
+import numpy
+
+speed = [32,111,138,28,59,77,97]
+x = numpy.std(speed)
+print(x)
+
+Machine Learning - Percentiles
+
+ages = [5,31,43,48,50,41,7,11,15,39,80,82,32,2,8,6,25,36,27,61,31]
+
+NumPy percentile() method to find the percentiles:
+import numpy
+ages = [5,31,43,48,50,41,7,11,15,39,80,82,32,2,8,6,25,36,27,61,31]
+x = numpy.percentile(ages, 75)
+print(x)
+
+the age that 90% of the people are younger than?
+import numpy
+ages = [5,31,43,48,50,41,7,11,15,39,80,82,32,2,8,6,25,36,27,61,31]
+x = numpy.percentile(ages, 90)
+print(x)
+
+Machine Learning - Data Distribution:
+
+Array containing 250 random floats between 0 and 5:
+import numpy
+x = numpy.random.uniform(0.0, 5.0, 250)
+print(x)
+
+Draw a histogram:
+
+import numpy
+import matplotlib.pyplot as plt
+
+x = numpy.random.uniform(0.0, 5.0, 250)
+
+plt.hist(x, 5)
+plt.show()
+
+Result:
+
+52 values are between 0 and 1
+48 values are between 1 and 2
+49 values are between 2 and 3
+51 values are between 3 and 4
+50 values are between 4 and 5
+
+
+
+
+
+
+Big Data Distributions
+
+Create an array with 100000 random numbers, and display them using a histogram with 100 bars:
+
+import numpy
+import matplotlib.pyplot as plt
+
+x = numpy.random.uniform(0.0, 5.0, 100000)
+
+plt.hist(x, 100)
+plt.show()
+
+
+Normal Data Distribution
+
+A typical normal data distribution:
+
+import numpy
+import matplotlib.pyplot as plt
+
+x = numpy.random.normal(5.0, 1.0, 100000)
+
+plt.hist(x, 100)
+plt.show()
+
+
+
+Scatter Plot
+A scatter plot is a diagram where each value in the data set is represented by a dot.
+
+
+The Matplotlib module has a method for drawing scatter plots, it needs two arrays of the same length, 
+one for the values of the x-axis, and one for the values of the y-axis:
+
+x = [5,7,8,7,2,17,2,9,4,11,12,9,6]
+
+y = [99,86,87,88,111,86,103,87,94,78,77,85,86]
+
+The x array represents the age of each car.
+
+The y array represents the speed of each car.
+
+Use the scatter() method to draw a scatter plot diagram:
+
+import matplotlib.pyplot as plt
+
+x = [5,7,8,7,2,17,2,9,4,11,12,9,6]
+y = [99,86,87,88,111,86,103,87,94,78,77,85,86]
+
+plt.scatter(x, y)
+plt.show()
+Result:
+
+Random Data Distributions
+
+A scatter plot with 1000 dots:
+
+import numpy
+import matplotlib.pyplot as plt
+
+x = numpy.random.normal(5.0, 1.0, 1000)
+y = numpy.random.normal(10.0, 2.0, 1000)
+
+plt.scatter(x, y)
+plt.show()
+
+Linear Regression
+Linear regression uses the relationship between the data-points to draw a straight line through all them.
+
+This line can be used to predict future values
+
+Start by drawing a scatter plot:
+
+import matplotlib.pyplot as plt
+
+x = [5,7,8,7,2,17,2,9,4,11,12,9,6]
+y = [99,86,87,88,111,86,103,87,94,78,77,85,86]
+
+plt.scatter(x, y)
+plt.show()
+
+Import scipy and draw the line of Linear Regression:
+
+import matplotlib.pyplot as plt
+from scipy import stats
+
+x = [5,7,8,7,2,17,2,9,4,11,12,9,6]
+y = [99,86,87,88,111,86,103,87,94,78,77,85,86]
+
+slope, intercept, r, p, std_err = stats.linregress(x, y)
+
+def myfunc(x):
+  return slope * x + intercept
+
+mymodel = list(map(myfunc, x))
+
+plt.scatter(x, y)
+plt.plot(x, mymodel)
+plt.show()
+
+import matplotlib.pyplot as plt
+from scipy import stats
+
+the arrays that represent the values of the x and y axis:
+
+x = [5,7,8,7,2,17,2,9,4,11,12,9,6]
+y = [99,86,87,88,111,86,103,87,94,78,77,85,86]
+
+Execute a method that returns some important key values of Linear Regression:
+
+slope, intercept, r, p, std_err = stats.linregress(x, y)
+
+ function that uses the slope and intercept values to return a new value. This new value represents where on the y-axis the corresponding x value will be placed:
+
+def myfunc(x):
+  return slope * x + intercept
+
+Run each value of the x array through the function. This will result in a new array with new values for the y-axis:
+
+mymodel = list(map(myfunc, x))
+Draw the original scatter plot:
+plt.scatter(x, y)
+
+Draw the line of linear regression:
+
+plt.plot(x, mymodel)
+Display the diagram:
+plt.show()
+
+
+R for Relationship
+
+How well does my data fit in a linear regression?
+from scipy import stats
+
+x = [5,7,8,7,2,17,2,9,4,11,12,9,6]
+y = [99,86,87,88,111,86,103,87,94,78,77,85,86]
+slope, intercept, r, p, std_err = stats.linregress(x, y)
+print(r)
+
+Predict Future Values
+
+def myfunc(x):
+  return slope * x + intercept
+  
+  Predict the speed of a 10 years old car:
+
+from scipy import stats
+
+x = [5,7,8,7,2,17,2,9,4,11,12,9,6]
+y = [99,86,87,88,111,86,103,87,94,78,77,85,86]
+
+slope, intercept, r, p, std_err = stats.linregress(x, y)
+
+def myfunc(x):
+  return slope * x + intercept
+
+speed = myfunc(10)
+
+print(speed)
+
+Predicted a speed at 85.6, which we also could read from the diagram:
+Bad Fit?
+
+These values for the x- and y-axis should result in a very bad fit for linear regression:
+
+import matplotlib.pyplot as plt
+from scipy import stats
+
+x = [89,43,36,36,95,10,66,34,38,20,26,29,48,64,6,5,36,66,72,40]
+y = [21,46,3,35,67,95,53,72,58,10,26,34,90,33,38,20,56,2,47,15]
+
+slope, intercept, r, p, std_err = stats.linregress(x, y)
+
+def myfunc(x):
+  return slope * x + intercept
+
+mymodel = list(map(myfunc, x))
+
+plt.scatter(x, y)
+plt.plot(x, mymodel)
+plt.show()
+Result:
+
+And the r for relationship?
+
+Example
+You should get a very low r value.
+
+import numpy
+from scipy import stats
+
+x = [89,43,36,36,95,10,66,34,38,20,26,29,48,64,6,5,36,66,72,40]
+y = [21,46,3,35,67,95,53,72,58,10,26,34,90,33,38,20,56,2,47,15]
+
+slope, intercept, r, p, std_err = stats.linregress(x, y)
+
+print(r)
+
+
+Polynomial Regression
+If your data points clearly will not fit a linear regression (a straight line through all data points), it might be ideal for polynomial regression.
+
+Polynomial regression, like linear regression, uses the relationship between the variables x and y to find the best way to draw a line through the data points.
+
+Start by drawing a scatter plot:
+
+import matplotlib.pyplot as plt
+
+x = [1,2,3,5,6,7,8,9,10,12,13,14,15,16,18,19,21,22]
+y = [100,90,80,60,60,55,60,65,70,70,75,76,78,79,90,99,99,100]
+
+plt.scatter(x, y)
+plt.show()
+Result:
+
+
+Import numpy and matplotlib then draw the line of Polynomial Regression:
+
+import numpy
+import matplotlib.pyplot as plt
+
+x = [1,2,3,5,6,7,8,9,10,12,13,14,15,16,18,19,21,22]
+y = [100,90,80,60,60,55,60,65,70,70,75,76,78,79,90,99,99,100]
+
+mymodel = numpy.poly1d(numpy.polyfit(x, y, 3))
+
+myline = numpy.linspace(1, 22, 100)
+
+plt.scatter(x, y)
+plt.plot(myline, mymodel(myline))
+plt.show()
+Result:
+
+
+import numpy
+import matplotlib.pyplot as plt
+
+y = [100,90,80,60,60,55,60,65,70,70,75,76,78,79,90,99,99,100]
+
+NumPy has a method that lets us make a polynomial model:
+
+mymodel = numpy.poly1d(numpy.polyfit(x, y, 3))
+
+Then specify how the line will display, we start at position 1, and end at position 22:
+
+myline = numpy.linspace(1, 22, 100)
+
+Draw the original scatter plot:
+
+plt.scatter(x, y)
+
+Draw the line of polynomial regression:
+
+plt.plot(myline, mymodel(myline))
+
+Display the diagram:
+
+plt.show()
+
+R-Squared
+
+from sklearn.metrics import r2_score
+
+x = [1,2,3,5,6,7,8,9,10,12,13,14,15,16,18,19,21,22]
+y = [100,90,80,60,60,55,60,65,70,70,75,76,78,79,90,99,99,100]
+mymodel = numpy.poly1d(numpy.polyfit(x, y, 3))
+print(r2_score(y, mymodel(x)))
+
+Predict Future Values
+mymodel = numpy.poly1d(numpy.polyfit(x, y, 3))
+
+Predict the speed of a car passing at 17 P.M:
+
+import numpy
+from sklearn.metrics import r2_score
+
+x = [1,2,3,5,6,7,8,9,10,12,13,14,15,16,18,19,21,22]
+y = [100,90,80,60,60,55,60,65,70,70,75,76,78,79,90,99,99,100]
+
+mymodel = numpy.poly1d(numpy.polyfit(x, y, 3))
+
+speed = mymodel(17)
+print(speed)
+
+import pandas
+
+df = pandas.read_csv("cars.csv")
+
+X = df[['Weight', 'Volume']]
+y = df['CO2']
+
+from sklearn import linear_model
+
+regr = linear_model.LinearRegression()
+regr.fit(X, y)
+
+#predict the CO2 emission of a car where the weight is 2300kg, and the volume is 1300cm3:
+predictedCO2 = regr.predict([[2300, 1300]])
+
+import pandas
+from sklearn import linear_model
+
+df = pandas.read_csv("cars.csv")
+
+X = df[['Weight', 'Volume']]
+y = df['CO2']
+
+regr = linear_model.LinearRegression()
+regr.fit(X, y)
+
+#predict the CO2 emission of a car where the weight is 2300kg, and the volume is 1300cm3:
+predictedCO2 = regr.predict([[2300, 1300]])
+
+print(predictedCO2)
+
+Result:
+[107.2087328]
+
+
+Coefficient
+
+Print the coefficient values of the regression object:
+
+import pandas
+from sklearn import linear_model
+
+df = pandas.read_csv("cars.csv")
+
+X = df[['Weight', 'Volume']]
+y = df['CO2']
+
+regr = linear_model.LinearRegression()
+regr.fit(X, y)
+
+print(regr.coef_)
+Result:
+[0.00755095 0.00780526]
+
+
+import pandas
+from sklearn import linear_model
+
+df = pandas.read_csv("cars.csv")
+
+X = df[['Weight', 'Volume']]
+y = df['CO2']
+
+regr = linear_model.LinearRegression()
+regr.fit(X, y)
+
+predictedCO2 = regr.predict([[3300, 1300]])
+
+print(predictedCO2)
+
+Result:
+[114.75968007]
+
+Scale Features
+
+Scale all values in the Weight and Volume columns:
+
+import pandas
+from sklearn import linear_model
+from sklearn.preprocessing import StandardScaler
+scale = StandardScaler()
+
+df = pandas.read_csv("cars2.csv")
+
+X = df[['Weight', 'Volume']]
+
+scaledX = scale.fit_transform(X)
+
+print(scaledX)
+Result:
+Note that the first two values are -2.1 and -1.59, which corresponds to our calculations:
+
+[[-2.10389253 -1.59336644]
+ [-0.55407235 -1.07190106]
+ [-1.52166278 -1.59336644]
+ [-1.78973979 -1.85409913]
+ [-0.63784641 -0.28970299]
+ [-1.52166278 -1.59336644]
+ [-0.76769621 -0.55043568]
+ [ 0.3046118  -0.28970299]
+ [-0.7551301  -0.28970299]
+ [-0.59595938 -0.0289703 ]
+ [-1.30803892 -1.33263375]
+ [-1.26615189 -0.81116837]
+ [-0.7551301  -1.59336644]
+ [-0.16871166 -0.0289703 ]
+ [ 0.14125238 -0.0289703 ]
+ [ 0.15800719 -0.0289703 ]
+ [ 0.3046118  -0.0289703 ]
+ [-0.05142797  1.53542584]
+ [-0.72580918 -0.0289703 ]
+ [ 0.14962979  1.01396046]
+ [ 1.2219378  -0.0289703 ]
+ [ 0.5685001   1.01396046]
+ [ 0.3046118   1.27469315]
+ [ 0.51404696 -0.0289703 ]
+ [ 0.51404696  1.01396046]
+ [ 0.72348212 -0.28970299]
+ [ 0.8281997   1.01396046]
+ [ 1.81254495  1.01396046]
+ [ 0.96642691 -0.0289703 ]
+ [ 1.72877089  1.01396046]
+ [ 1.30990057  1.27469315]
+ [ 1.90050772  1.01396046]
+ [-0.23991961 -0.0289703 ]
+ [ 0.40932938 -0.0289703 ]
+ [ 0.47215993 -0.0289703 ]
+ [ 0.4302729   2.31762392]]
+ 
+ Predict CO2 Values
+ 
+ Predict the CO2 emission from a 1.3 liter car that weighs 2300 kilograms:
+
+import pandas
+from sklearn import linear_model
+from sklearn.preprocessing import StandardScaler
+scale = StandardScaler()
+
+df = pandas.read_csv("cars2.csv")
+
+X = df[['Weight', 'Volume']]
+y = df['CO2']
+
+scaledX = scale.fit_transform(X)
+
+regr = linear_model.LinearRegression()
+regr.fit(scaledX, y)
+
+scaled = scale.transform([[2300, 1.3]])
+
+predictedCO2 = regr.predict([scaled[0]])
+print(predictedCO2)
+Result:
+[107.2087328]
+
+Machine Learning - Train/Test
+
+
+
+
